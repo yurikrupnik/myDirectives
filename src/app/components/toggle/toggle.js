@@ -3,27 +3,46 @@
 
   angular
     .module('myDirectives')
-    .directive('toggleState', toggleState);
+    .directive('toggleState', toggle);
+
+
 
   /** @ngInject */
-  function toggleState() {
+  function toggle(lodash, $log) {
+    var isBoolean =  lodash.isBoolean;
+    var reduce = lodash.reduce;
+    var split = lodash.split;
+
+    function toggleBool(obj, nextProp) {
+      // toggles bool property when is passes the iteer check
+      // else returns new value for next iteer
+      if (isBoolean(obj[nextProp])) {
+        obj[nextProp] = !obj[nextProp];
+        return false;
+      }
+      return obj[nextProp];
+    }
+
+    function toggleStateOnObject(initialState, string) {
+      var props = split(string, '.');
+      if (props.length <= 1) {
+        // make sure u use vm
+        $log.warn('not using vm');
+
+      }
+      reduce(props, toggleBool, initialState);
+    }
+
     return {
       restrict: 'A',
       link: linkFunc
     };
 
     function linkFunc(scope, el, attr) {
-      // vm.someProperty = false/true - vm is not a must, any name will work
-      var splits = attr.toggleState.split('.');
-      var obj = splits[0]; // vm part
-      var prop = splits[1]; // property part
-
-      function toggleBool() {
-        scope[obj][prop] = !scope[obj][prop];
-      }
-
       el.on('click', function () {
-        scope.$apply(toggleBool);
+        scope.$apply(function () {
+          toggleStateOnObject(scope, attr.toggleState);
+        });
       });
     }
   }
