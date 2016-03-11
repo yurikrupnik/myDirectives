@@ -9,8 +9,11 @@
       'ngSanitize',
       'ngMessages',
       'ngAria',
-      'restangular', 'ui.router', 'ui.bootstrap', 'toastr',
+      'restangular',
+      'ui.router',
+      'ui.bootstrap',
+      'toastr',
+      'ngLodash',
       'ui.grid',
       'ui.grid.edit']);
-
 })();

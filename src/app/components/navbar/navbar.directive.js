@@ -28,6 +28,7 @@
       vm.relativeDate = moment(vm.creationDate).fromNow();
       vm.state = false;
 
+      vm.ss = true;
     }
   }
 
