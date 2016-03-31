@@ -5,8 +5,6 @@
     .module('myDirectives')
     .directive('toggleState', toggle);
 
-
-
   /** @ngInject */
   function toggle(lodash, $log) {
     var isBoolean =  lodash.isBoolean;
@@ -14,29 +12,26 @@
     var split = lodash.split;
     var trim = lodash.trim;
 
+    function toggleBool(obj, currentValue) {
+      // toggles bool property when the val of currentVal with the reduced object, is bool^.
+      var nextKey = trim(currentValue);
+      if (isBoolean(obj[nextKey])) {
+        obj[nextKey] = !obj[nextKey];
+      }
+      return obj[nextKey];
+    }
+
     function splitByDot(string) {
       return split(string, '.');
     }
-    function toggleBool(obj, currentValue) {
-      // toggles bool property when is passes the iteer check
-      // else returns new value for next iteer
-      var nextProp = trim(currentValue);
-      if (isBoolean(obj[nextProp])) {
-        obj[nextProp] = !obj[nextProp]; // this line is the brain of the directive = all that code for dynamic toggle on click directive
-        return false;
-      }
-      return obj[nextProp];
-    }
-
     function toggleStateOnObject(initialState, stringOfProps) {
       var props = splitByDot(stringOfProps);
       if (props.length <= 1) {
-        // make sure u use vm
+        // make sure u use vm, props.length === 0 is when u work on $scope
         $log.warn('not using vm');
-
       }
-      // todo name it, make a func for it
       reduce(props, toggleBool, initialState);
+      // check for bool prop on iter on chained object
     }
 
     return {
