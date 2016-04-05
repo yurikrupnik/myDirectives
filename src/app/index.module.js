@@ -15,5 +15,7 @@
       'toastr',
       'ngLodash',
       'ui.grid',
-      'ui.grid.edit']);
+      'ui.grid.edit',
+      'my.spinner'
+    ]);
 })();
